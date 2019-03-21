@@ -109,6 +109,7 @@ wireguard_remove(){
 
 add_user(){
     echo -e "\033[37;41m给新用户起个名字，不能和已有用户重复\033[0m"
+    find /etc/wireguard/ -name *.conf ! -name wg0.conf	
     read -p "请输入用户名：" newname
     cd /etc/wireguard/
     cp client.conf $newname.conf
@@ -151,7 +152,9 @@ start_menu(){
     wireguard_install
     ;;
     2)
-    content=$(cat /etc/wireguard/client.conf)
+    find /etc/wireguard/ -name *.conf ! -name wg0.conf
+    read -p "请输入要显示二维码的用户名：" name
+    content=$(cat /etc/wireguard/$name.conf)
     echo "${content}" | qrencode -o - -t UTF8
     ;;
     3)
